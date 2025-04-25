@@ -1,0 +1,7 @@
+cat <<EOF > .gitignore
+.env
+*.log
+__pycache__/
+*.pyc
+docker-volume/
+EOF
