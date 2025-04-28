@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
   postgres:
     image: postgres:15
@@ -13,6 +12,20 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - monitoring_network
+
+  postgres_exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: postgres_exporter
+    environment:
+      DATA_SOURCE_NAME: "postgresql://devuser:devpass@postgres:5432/devdb?sslmode=disable"
+    ports:
+      - "9187:9187"
+    depends_on:
+      - postgres
+    networks:
+      - monitoring_network
 
   redis:
     image: redis:7
@@ -20,17 +33,63 @@ services:
     restart: always
     ports:
       - "6379:6379"
+    networks:
+      - monitoring_network
+
+  redis_exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: redis_exporter
+    environment:
+      REDIS_ADDR: "redis://redis:6379"
+    ports:
+      - "9121:9121"
+    depends_on:
+      - redis
+    networks:
+      - monitoring_network
 
   prometheus:
     image: prom/prometheus
     container_name: dev_prometheus
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring_network
+      # Notice: No ports exposed here!
+
+  prometheus-proxy:
+    image: nginx:alpine
+    container_name: prometheus_proxy
+    depends_on:
+      - prometheus
+    volumes:
+      - ./nginx/prometheus.conf:/etc/nginx/conf.d/default.conf
+      - ./nginx/.htpasswd:/etc/nginx/.htpasswd
     ports:
-      - "9090:9090"
+      - "9090:80"
+    networks:
+      - monitoring_network
 
   grafana:
     image: grafana/grafana
     container_name: dev_grafana
     ports:
       - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=StrongAdminPassword123
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+      - ./grafana/dashboards:/etc/grafana/dashboards
+    networks:
+      - monitoring_network
+
+networks:
+  monitoring_network:
+    driver: bridge
+
+volumes:
+  grafana_data:
