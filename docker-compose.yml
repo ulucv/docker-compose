@@ -55,7 +55,6 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - monitoring_network
-      # Notice: No ports exposed here!
 
   prometheus-proxy:
     image: nginx:alpine

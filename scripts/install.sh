@@ -1,12 +1,12 @@
 #!/bin/bash
 set -e
 
-echo "🛠️ Starting full environment setup (Docker, PostgreSQL, Redis)..."
+echo "Starting full environment setup (Docker, PostgreSQL, Redis)..."
 
 ##################################
 # Install Docker and Docker Compose
 ##################################
-echo "🔧 Installing Docker & Docker Compose..."
+echo "Installing Docker & Docker Compose..."
 
 # Remove old versions
 sudo apt remove docker docker-engine docker.io containerd runc -y
@@ -33,12 +33,12 @@ sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 # Add user to docker group
 sudo usermod -aG docker $USER
 
-echo "✅ Docker installation complete."
+echo "Docker installation complete."
 
 ##################################
 # Install Redis
 ##################################
-echo "🔧 Installing Redis..."
+echo "Installing Redis..."
 
 # Install Redis server
 sudo apt update
@@ -48,7 +48,7 @@ sudo apt install -y redis-server
 sudo systemctl enable redis-server.service
 sudo systemctl start redis
 
-echo "✅ Redis installation complete."
+echo "Redis installation complete."
 
 ##################################
 # Install PostgreSQL
@@ -66,7 +66,7 @@ sudo apt install -y postgresql-client-common postgresql-client
 sudo systemctl enable postgresql
 sudo systemctl start postgresql
 
-echo "✅ PostgreSQL installation complete."
+echo "PostgreSQL installation complete."
 
 # Install Nginx proxy for Prometheus
 
@@ -77,5 +77,4 @@ htpasswd -c ./nginx/.htpasswd admin
 ##################################
 # Final message
 ##################################
-echo "🎉 Environment setup complete!"
-echo "ℹ️  Please log out and log back in (or reboot) to apply Docker group permissions."
+echo "Environment setup complete!"

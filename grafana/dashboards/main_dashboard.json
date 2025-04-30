@@ -1,0 +1,90 @@
+{
+  "id": null,
+  "title": "Dev Environment Overview",
+  "tags": [],
+  "timezone": "browser",
+  "schemaVersion": 36,
+  "version": 1,
+  "refresh": "5s",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "PostgreSQL Uptime",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "pg_up",
+          "legendFormat": "PostgreSQL Up",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 0,
+        "y": 0
+      }
+    },
+    {
+      "type": "stat",
+      "title": "Redis Uptime",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "redis_up",
+          "legendFormat": "Redis Up",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 4,
+        "y": 0
+      }
+    },
+    {
+      "type": "gauge",
+      "title": "Redis Memory Usage",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "redis_memory_used_bytes",
+          "legendFormat": "Used Memory",
+          "refId": "A"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes",
+          "max": 104857600
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 4
+      }
+    },
+    {
+      "type": "gauge",
+      "title": "PostgreSQL Connections",
+      "datasource": "Prometheus",
+      "targets": [
+        {
+          "expr": "pg_stat_activity_count",
+          "legendFormat": "Active Connections",
+          "refId": "A"
+        }
+      ],
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 4
+      }
+    }
+  ]
+}
