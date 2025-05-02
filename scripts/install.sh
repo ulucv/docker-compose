@@ -1,11 +1,4 @@
 #!/bin/bash
-#########################################################
-# Professional Environment Setup Script
-# Description: Installs Docker, Redis CLI, PostgreSQL client, and configures Nginx
-# Author: Updated by Claude
-# Date: April 30, 2025
-# Usage: sudo bash setup.sh [--skip-docker] [--skip-redis-cli] [--skip-psql]
-#########################################################
 
 # Exit on error, undefined variables, and propagate pipe failures
 set -euo pipefail
